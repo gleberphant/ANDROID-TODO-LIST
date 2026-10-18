@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:id="@+id/layoutMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/inputNovaTarefa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Nova tarefa"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/btnAdicionar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Adicionar" />
+
+    </LinearLayout>
+
+    <!-- layout_weight="1" e 0dp faz o RecyclerView consumir todo o resto da tela -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTarefas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

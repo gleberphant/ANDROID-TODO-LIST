@@ -1,0 +1,6 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- O parent DEVE ser Theme.MaterialComponents ou Theme.AppCompat -->
+    <style name="Theme.PUCPRDEVMOBILEAS1" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Itens de cor e estilo do seu app -->
+    </style>
+</resources>
