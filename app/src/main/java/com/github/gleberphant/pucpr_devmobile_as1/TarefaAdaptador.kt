@@ -11,16 +11,14 @@ import androidx.compose.material3.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 
 
-
-// classe que recebe a lista de tarefas e parra para o holder que possui os elementos visuais
+// classe que recebe repositorio de dados e faz o binding com o componente visual
 class TarefaAdaptador(
     val repositorioTarefa: TarefaRepositorio,
     val callbackEditar:(index: Int, tarefa: Tarefa) -> Unit,
     val callbackRemover:(index: Int) -> Unit
-
 )  : RecyclerView.Adapter<TarefaAdaptador.TarefaRefs>(){
-    private lateinit var parentView: ViewGroup
 
+    private lateinit var parentView: ViewGroup
     // classe interna que guarda ponteiro para os elementos visuais
     inner class TarefaRefs(tarefaView: View) : RecyclerView.ViewHolder(tarefaView){
         val txtNome: TextView = tarefaView.findViewById<TextView>(R.id.txtTarefa)
@@ -31,10 +29,12 @@ class TarefaAdaptador(
 
     // cria as referências para o componente tarefa
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TarefaRefs {
-        val tarefaView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.tarefa_view, parent, false)
-
         parentView = parent
+
+        val tarefaView = LayoutInflater.from(parentView.context)
+            .inflate(R.layout.tarefa_view, parentView, false)
+
+
         return TarefaRefs(tarefaView)
 
     }

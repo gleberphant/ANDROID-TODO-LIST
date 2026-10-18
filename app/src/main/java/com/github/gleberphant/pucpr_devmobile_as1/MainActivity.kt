@@ -53,14 +53,11 @@ class MainActivity : AppCompatActivity() {
         repositorio.adicionar(Tarefa("3", "tarefa 3", true))
 
         // configura o recycleView
-
         refs.recycleView.layoutManager = LinearLayoutManager(this)
         refs.recycleView.adapter = adaptador
 
         // configurar listener dos botões do menu principal
-        refs.btnAdicionar.setOnClickListener {
-            adicionarItem()
-        }
+        refs.btnAdicionar.setOnClickListener({ adicionarItem() })
 
     }
 
@@ -84,7 +81,8 @@ class MainActivity : AppCompatActivity() {
             .setTitle("Editar Tarefa")
             .setMessage("Atualizar a tarefa")
             .setView(inputEdicao)
-            .setPositiveButton("Salvar",{ dialog, which ->
+            .setPositiveButton("Salvar",{ _, _ ->
+
                 val novoTexto = inputEdicao.text.toString().trim()
                 repositorio.editar(index, Tarefa(
                     tarefaSelecionada.id,
