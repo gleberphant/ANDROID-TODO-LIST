@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.compose.material3.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +23,8 @@ class TarefaAdaptador(
     // classe interna que guarda ponteiro para os elementos visuais
     inner class TarefaRefs(tarefaView: View) : RecyclerView.ViewHolder(tarefaView){
         val txtNome: TextView = tarefaView.findViewById<TextView>(R.id.txtTarefa)
-        val btnExcluir: Button = tarefaView.findViewById<Button>(R.id.btnExcluir)
-        val btnEditar: Button = tarefaView.findViewById<Button>(R.id.btnEditar)
+        val btnExcluir: ImageButton = tarefaView.findViewById<ImageButton>(R.id.btnExcluir)
+        val btnEditar: ImageButton = tarefaView.findViewById<ImageButton>(R.id.btnEditar)
     }
 
 

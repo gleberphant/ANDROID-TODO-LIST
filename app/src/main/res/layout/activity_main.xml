@@ -6,18 +6,41 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <!-- LISTA DE TAREFAS -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textSize="32dp"
+        android:text="Minha Lista de Tarefas"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTarefas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1" />
+
+    <!-- MENU ADICIONAR TAREFA -->
     <LinearLayout
         android:id="@+id/layoutMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
 
         <EditText
             android:id="@+id/inputNovaTarefa"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Nova tarefa"
+            android:hint="digite sua tarefa ..."
             android:inputType="text" />
 
         <Button
@@ -28,13 +51,5 @@
             android:text="Adicionar" />
 
     </LinearLayout>
-
-    <!-- layout_weight="1" e 0dp faz o RecyclerView consumir todo o resto da tela -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTarefas"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_weight="1" />
 
 </LinearLayout>
