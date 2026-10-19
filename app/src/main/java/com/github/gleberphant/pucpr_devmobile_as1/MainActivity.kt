@@ -40,29 +40,30 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.btnAdicionar)
         )
         // configura repositorio
-        repositorio = TarefaRepositorio()
+        repositorio = TarefaRepositorio(this)
+        repositorio.init()
 
         // configura adaptador
         adaptador= TarefaAdaptador(
             repositorio,
-            { index, tarefa -> editarItem (index, tarefa) },
-            { index -> removerItem(index) })
+            { index, tarefa -> btnEventEditarItem (index, tarefa) },
+            { id, index -> btnEventRemoverItem(id, index) })
 
-        repositorio.adicionar(Tarefa("1", "tarefa 1", true))
-        repositorio.adicionar(Tarefa("2", "tarefa 2", true))
-        repositorio.adicionar(Tarefa("3", "tarefa 3", true))
+        //repositorio.adicionar(Tarefa("1", "tarefa 1", true))
+        //repositorio.adicionar(Tarefa("2", "tarefa 2", true))
+        //repositorio.adicionar(Tarefa("3", "tarefa 3", true))
 
         // configura o recycleView
         refs.recycleView.layoutManager = LinearLayoutManager(this)
         refs.recycleView.adapter = adaptador
 
         // configurar listener dos botões do menu principal
-        refs.btnAdicionar.setOnClickListener({ adicionarItem() })
+        refs.btnAdicionar.setOnClickListener({ btnEventAdicionarItem() })
 
     }
 
     //CRUD
-    fun adicionarItem(){
+    fun btnEventAdicionarItem(){
         val tarefaTexto = refs.inputTarefa.text.toString().trim()
         if (tarefaTexto.isEmpty()) return
 
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         adaptador.notifyItemInserted(repositorio.tamanho()-1)
     }
 
-    fun editarItem(index: Int, tarefaSelecionada: Tarefa){
+    fun btnEventEditarItem(index: Int, tarefaSelecionada: Tarefa){
         val inputEdicao = EditText(this).apply{
             setText(tarefaSelecionada.nome)
             setSelection(tarefaSelecionada.nome.length)
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Salvar",{ _, _ ->
 
                 val novoTexto = inputEdicao.text.toString().trim()
-                repositorio.editar(index, Tarefa(
+                repositorio.editarPorId(tarefaSelecionada.id, Tarefa(
                     tarefaSelecionada.id,
                     novoTexto,
                     tarefaSelecionada.status
@@ -95,8 +96,8 @@ class MainActivity : AppCompatActivity() {
             .setNegativeButton("Cancelar", null)
             .show()
     }
-    fun removerItem(index: Int){
-        repositorio.remover(index)
+    fun btnEventRemoverItem(id: String, index: Int){
+        repositorio.removerPorId(id)
         // Notifica a remoção do item para o View
         adaptador.notifyItemRemoved(index)
         // Atualiza as posições dos itens subsequentes para recalcular bindings
