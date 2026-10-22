@@ -7,6 +7,12 @@
     android:gravity="center_vertical">
 
     <!-- Ocupa todo o espaço horizontal restante (0dp + weight 1) -->
+<!--    <TextView-->
+<!--        android:id="@+id/txtId"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginRight="8dp"-->
+<!--        android:text="id" />-->
     <TextView
         android:id="@+id/txtTarefa"
         android:layout_width="0dp"
@@ -17,17 +23,21 @@
 
 
     <!-- Ocupa apenas o tamanho necessário do botão -->
-    <Button
+    <ImageButton
         android:id="@+id/btnEditar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Editar" />
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Editar Tarefa"
+        android:src="@drawable/baseline_edit_24" />
 
 
-    <Button
+    <ImageButton
         android:id="@+id/btnExcluir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Excluir" />
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Deletar Tarefa"
+        android:src="@drawable/baseline_delete_forever_24"/>
 
 </LinearLayout>
