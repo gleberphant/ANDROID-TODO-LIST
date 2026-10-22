@@ -11,12 +11,17 @@ class TarefaRepositorio(context: Context) : SQLiteOpenHelper(
     1
 )  {
 
-    val lista = mutableListOf<Tarefa>()
+    val listaCache = mutableListOf<Tarefa>()
     var proximoID: Int = 0
     var quantidadeItens: Int = 0
 
     fun init() {
 
+        carregaListaCache()
+
+    }
+
+    private fun carregaListaCache(){
         val db = readableDatabase
 
         val curso = db.rawQuery("""
@@ -31,17 +36,15 @@ class TarefaRepositorio(context: Context) : SQLiteOpenHelper(
                     curso.getString(curso.getColumnIndexOrThrow("id")),
                     curso.getString(curso.getColumnIndexOrThrow("nome")),
                     true
-
                 )
-                lista.add(novaTarefa)
+
+                listaCache.add(novaTarefa)
                 proximoID=novaTarefa.id.toInt()+1
             }
 
         } finally {
-
             curso.close()
         }
-
     }
     override fun onCreate(db: SQLiteDatabase?) {
         val sql = """
@@ -65,7 +68,7 @@ class TarefaRepositorio(context: Context) : SQLiteOpenHelper(
 
         val db = writableDatabase
 
-        db?.execSQL(
+        db.execSQL(
             """
             INSERT INTO tarefas (id, nome, status)
             VALUES(?,?,?)
@@ -75,38 +78,34 @@ class TarefaRepositorio(context: Context) : SQLiteOpenHelper(
         quantidadeItens++
         proximoID++
 
-        lista.add(novaTarefa)
+        listaCache.add(novaTarefa)
 
     }
 
     fun buscarPorIndice(index: Int) : Tarefa{
 
-//        val db = readableDatabase
-//
-//        val curso = db.rawQuery("""
-//            SELECT * FROM tarefas
-//            ORDER BY id
-//
-//        """.trimIndent(), null  )
-//
-//        try {
-//            if (curso.moveToPosition(index)){
-//                    return Tarefa(
-//                        curso.getString(curso.getColumnIndexOrThrow("id")),
-//                        curso.getString(curso.getColumnIndexOrThrow("nome")),
-//                        true
-//                    )
-//            }
-//
-//        } finally {
-//            curso.close()
-//        }
+        val db = readableDatabase
 
-        return lista[index]
+        val curso = db.rawQuery("""
+            SELECT count() FROM tarefas
+            ORDER BY id
+
+        """.trimIndent(), null  )
+
+        try {
+            curso.moveToFirst()
+            val count = curso.getInt(0)
+            if (count != listaCache.size)
+                  carregaListaCache()
+        } finally {
+            curso.close()
+        }
+
+        return listaCache[index]
     }
 
     fun tamanho(): Int{
-    return lista.size
+    return listaCache.size
     //return quantidadeItens
     }
 
@@ -155,50 +154,23 @@ class TarefaRepositorio(context: Context) : SQLiteOpenHelper(
             cursor.close()
         }
 
-        lista.removeIf { tarefa -> tarefa.id == ID }
-
-    }
-    fun removerPorIndice(index: Int){
-
-        if (index < 0 || index > quantidadeItens ) return
-
-        val db= writableDatabase
-
-        db.execSQL("""
-               DELETE FROM tarefas
-               WHERE id = (
-                   SELECT id FROM tarefas
-                   ORDER BY id
-                   LIMIT 1 OFFSET ?
-               )
-        """.trimIndent(),
-            arrayOf(index.toString()))
-
-        val cursor = db.rawQuery("""SELECT changes()""", null)
-
-        try{
-            if (cursor.moveToFirst() && cursor.getInt(0) > 0) quantidadeItens--
-        }finally {
-            cursor.close()
-        }
-
-        lista.removeAt(index)
+        listaCache.removeIf { tarefa -> tarefa.id == ID }
 
     }
 
     fun editarPorId(id: String, novaTarefa: Tarefa){
         val db = writableDatabase
 
-        db.rawQuery("""
+        db.execSQL("""
             UPDATE tarefas 
             SET nome= ?, status=?
             WHERE id = ?
         """.trimIndent(),
-            arrayOf(novaTarefa.nome, novaTarefa.status.toString(), novaTarefa.id) ).close()
+            arrayOf(novaTarefa.nome, novaTarefa.status.toString(), novaTarefa.id) )
 
-        for((i, v) in lista.withIndex() ){
+        for((i, v) in listaCache.withIndex() ){
             if (v.id == id)
-                lista[i]=novaTarefa
+                listaCache[i]=novaTarefa
           }
     }
 
